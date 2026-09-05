@@ -1,0 +1,22 @@
+[credential "http://global-infra-jp-main.dgn.renesas.com"]
+	provider = generic
+[safe]
+	directory = C:/Users/a5134005/AppData/Local/nvim
+[http]
+	sslVerify = false
+	postBuffer = 524288000
+[user]
+	name = Hung Nguyen
+	email = hung.nguyen.jx@renesas.com
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[credential]
+	gitLabAuthModes = -h
+[core]
+	autocrlf = false
+	longpaths = true
+[credential "http://pbgitap01.rea.renesas.com"]
+	provider = generic

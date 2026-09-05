@@ -1,0 +1,18 @@
+onboarding = false
+
+[terminal]
+# New interactive panes start in Nushell (installed via AppData/Local/Programs/nu).
+default_shell = 'C:\Users\a5134005\AppData\Local\Programs\nu\bin\nu.exe'
+
+[ui.toast]
+delivery = "herdr"
+
+[theme]
+name = "tokyo-night"
+auto_switch = false
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+[ui.sound]
+enabled = false

@@ -1,0 +1,14 @@
+.DS_Store
+Thumbs.db
+nushell/history.txt
+nushell/.plugins.lock
+nushell/plugin.nu
+nushell/caches/
+nushell/spell/
+herdr/session.json
+herdr/*.log
+herdr/*.sock
+herdr/.plugins.lock
+powershell/Modules/
+powershell/Scripts/
+nvim/.lazy/
