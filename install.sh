@@ -16,7 +16,8 @@ TS="$(date +%Y%m%d-%H%M%S)"
 mappings=(
     "nushell:$HOME/.config/nushell"
     "lazygit:$HOME/.config/lazygit"
-    "herdr:$HOME/.config/herdr"
+    "herdr:$HOME/.config/herdr",
+    "neofetch:$HOME/.config/neofetch",
     "wezterm:$HOME/.config/wezterm"
     "powershell:$HOME/.config/powershell"
     "nvim:$HOME/.config/nvim"
@@ -58,6 +59,21 @@ for pair in "${mappings[@]}"; do
     ln -s "$repo_dir" "$target"
     printf '%-12s created  %s -> %s\n' "$repo" "$target" "$repo_dir"
 done
+
+# neofetch: install via the available package manager if missing.
+if ! command -v neofetch >/dev/null 2>&1; then
+    if command -v apt-get >/dev/null 2>&1; then
+        sudo apt-get install -y neofetch
+    elif command -v dnf >/dev/null 2>&1; then
+        sudo dnf install -y neofetch
+    elif command -v pacman >/dev/null 2>&1; then
+        sudo pacman -S --noconfirm neofetch
+    else
+        echo "neofetch     not found; install it manually" >&2
+    fi
+else
+    echo "neofetch     skipped  (already installed)"
+fi
 
 # .gitconfig: write the include stub.
 gitconfig="$HOME/.gitconfig"

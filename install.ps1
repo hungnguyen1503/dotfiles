@@ -13,6 +13,7 @@ $ts = Get-Date -Format 'yyyyMMdd-HHmmss'
 $mappings = @(
     @{ repo = 'nushell';    target = Join-Path $env:APPDATA 'nushell' },
     @{ repo = 'lazygit';    target = Join-Path $env:APPDATA 'lazygit' },
+    @{ repo = 'fastfetch';  target = Join-Path $env:APPDATA 'fastfetch' },
     @{ repo = 'herdr';      target = Join-Path $env:APPDATA 'herdr' },
     @{ repo = 'wezterm';    target = Join-Path $HOME '.config\wezterm' },
     @{ repo = 'powershell'; target = Join-Path $HOME 'Documents\PowerShell' },
