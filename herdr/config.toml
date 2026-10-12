@@ -13,6 +13,90 @@ auto_switch = false
 
 [ui]
 show_agent_labels_on_pane_borders = true
-
+# Disable pane scrollbars to reclaim the rightmost column and avoid ConPTY reflow oscillations on alternate screen
+pane_scrollbars = false
+# Leave outer terminal title alone to prevent title-change storms across WezTerm tabline and herdr-auto-title
+window_title = ""
 [ui.sound]
 enabled = false
+
+# =============================================================================
+# Keybindings ([keys])
+# Reload live with: `herdr server reload-config` or press `prefix + Shift + R`
+# =============================================================================
+[keys]
+prefix = "ctrl+b"
+
+# --- General & Server ---
+help = "prefix+?"
+settings = "prefix+s"
+detach = "prefix+q"
+reload_config = "prefix+shift+r"
+toggle_sidebar = "prefix+b"
+open_notification_target = "prefix+o"
+
+# --- Workspaces & Worktrees ---
+workspace_picker = "prefix+w"
+goto = "prefix+g"
+new_workspace = "prefix+shift+n"
+rename_workspace = "prefix+shift+w"
+close_workspace = "prefix+shift+d"
+new_worktree = "prefix+shift+g"
+switch_workspace = "prefix+shift+1..9"
+
+# --- Agents ---
+focus_agent = "prefix+alt+1..9"
+next_agent = "prefix+alt+n"
+previous_agent = "prefix+alt+b"
+
+# --- Tabs ---
+new_tab = "prefix+c"
+rename_tab = "prefix+shift+t"
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
+close_tab = "prefix+shift+x"
+switch_tab = "prefix+1..9"
+move_tab_previous = "alt+shift+left"
+move_tab_next = "alt+shift+right"
+
+# --- Panes (Splits, Focus, Zoom, Resize) ---
+split_vertical = "prefix+v"
+split_horizontal = "prefix+minus"
+close_pane = "prefix+x"
+rename_pane = "prefix+shift+p"
+zoom = "prefix+z"
+edit_scrollback = "prefix+e"
+clear_pane = "prefix+ctrl+k"
+
+# Vim-style pane navigation
+focus_pane_left = "prefix+h"
+focus_pane_down = "prefix+j"
+focus_pane_up = "prefix+k"
+focus_pane_right = "prefix+l"
+cycle_pane_next = "prefix+tab"
+cycle_pane_previous = "prefix+shift+tab"
+
+# Pane resizing
+resize_mode = "prefix+r"
+resize_pane_left = "ctrl+shift+alt+left"
+resize_pane_down = "ctrl+shift+alt+down"
+resize_pane_up = "ctrl+shift+alt+up"
+resize_pane_right = "ctrl+shift+alt+right"
+
+# --- Navigate Mode (local movement while navigate mode is open) ---
+navigate_workspace_up = "up"
+navigate_workspace_down = "down"
+navigate_pane_left = "h"
+navigate_pane_down = "j"
+navigate_pane_up = "k"
+navigate_pane_right = "l"
+
+# --- Custom Popup Commands ---
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+command = "lazygit"
+width = "85%"
+height = "85%"
+
+

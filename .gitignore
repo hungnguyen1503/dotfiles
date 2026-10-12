@@ -5,10 +5,15 @@ nushell/.plugins.lock
 nushell/plugin.nu
 nushell/caches/
 nushell/spell/
+nushell/plugin.msgpackz
 herdr/session.json
 herdr/*.log
 herdr/*.sock
 herdr/.plugins.lock
+herdr/plugins/
+herdr/plugins.json
+herdr/release-notes.json
+herdr/session-snapshots/
 powershell/Modules/
 powershell/Scripts/
 nvim/.lazy/

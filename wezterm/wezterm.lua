@@ -24,6 +24,11 @@ local nu_prog = is_windows
     and "C:\\Users\\a5134005\\AppData\\Local\\Programs\\nu\\bin\\nu.exe"
     or "nu"
 
+-- Single source of truth for the Herdr binary
+local herdr_prog = is_windows
+    and "C:\\Users\\a5134005\\AppData\\Local\\Programs\\Herdr\\bin\\herdr.exe"
+    or "herdr"
+
 local config = {}
 
 if wezterm.config_builder then
@@ -103,8 +108,11 @@ config.window_decorations = "RESIZE"
 config.window_close_confirmation = "AlwaysPrompt"
 config.scrollback_lines = 3000
 
--- Enable Scroll bar
-config.enable_scroll_bar = true
+-- Disable scroll bar: when enabled, WezTerm hides the scrollbar in alternate-screen
+-- mode (e.g. omp /settings, /agents, /btw modals), dynamically altering the window's
+-- character column width. On Windows ConPTY, this triggers rapid reflow storms,
+-- margin wrapping/unwrapping, and vertical jumping ("up and down", flashing words).
+config.enable_scroll_bar = false
 
 -- Tab bar
 config.use_fancy_tab_bar = false
@@ -189,7 +197,7 @@ config.launch_menu = {
         -- Herdr workspace manager; its panes start in Nushell
         -- (%APPDATA%/herdr/config.toml -> [terminal] default_shell = nu.exe).
         label = 'Herdr (Nushell)',
-        args = { 'C:\\Users\\a5134005\\AppData\\Local\\Programs\\Herdr\\bin\\herdr.exe' },
+        args = { herdr_prog },
         cwd = default_cwd,
     },
     {
@@ -227,10 +235,8 @@ config.launch_menu = {
 }
 
 -- Default terminal startup
--- Nushell 0.114.1 (installed at AppData/Local/Programs/nu)
-if is_windows then
-    config.default_prog = { nu_prog }
-end
+-- Herdr workspace manager (panes start in Nushell via %APPDATA%/herdr/config.toml)
+config.default_prog = { herdr_prog }
 
 -- Set the default directory where WezTerm will start
 config.default_cwd = default_cwd
@@ -374,14 +380,9 @@ config.keys = {
     -- Switch Workspace
     { key = "s",          mods = "ALT",        action = workspace_switcher.switch_workspace(), } }
 
--- Create tab activation keys in a loop (1-7)
-for i = 1, 7 do
-    table.insert(config.keys, {
-        key = tostring(i),
-        mods = "ALT",
-        action = wezterm.action.ActivateTab(i - 1)
-    })
-end
+-- Alt+1..9 is intentionally NOT bound here: WezTerm launches Herdr
+-- (default_prog), and Herdr uses Alt+1..9 to focus agents (focus_agent in
+-- herdr/config.toml). Use Ctrl+Tab / Ctrl+Shift+Tab to cycle WezTerm tabs.
 
 -- NOTE: Set up tabline for WezTerm
 tabline.setup({
@@ -414,7 +415,8 @@ tabline.setup({
             { 'zoomed', padding = 0 },
         },
         tab_inactive = { 'index', { 'process', padding = { left = 0, right = 1 } } },
-        tabline_x = { 'ram', 'cpu' },
+        -- 'cpu' omitted: tabline's cpu.lua:63 throws "bad argument #2 to 'format' (number expected, got nil)" on Windows
+        tabline_x = { 'ram' },
         tabline_y = { 'datetime', 'battery' },
         tabline_z = { 'hungquangnguyen' },
     },
@@ -434,5 +436,36 @@ end
 -- Load extension configuration
 tabline.apply_to_config(config)
 workspace_switcher.apply_to_config(config)
+
+-- Make `bash` resolve to Git Bash, never the WSL launcher.
+-- Root cause: C:\WINDOWS\system32\bash.exe is the WSL bootstrap exe and the
+-- machine PATH is edited before the user PATH, so no user-level reordering
+-- (we are not admins) can beat it. Coding agents (omp) invoking
+-- `bash script.sh` landed in Ubuntu WSL, which cannot open Windows-style
+-- paths ("No such file or directory"), lacks coder/ssh/python, and costs
+-- many retry cycles per run. Prepending Git for Windows' bin here fixes the
+-- environment of every pane process and all their descendants (omp, its
+-- embedded shell, and children). WSL itself stays reachable via `wsl.exe`.
+-- The first-entry check keeps this idempotent if the fixed PATH is ever
+-- inherited by a nested wezterm instance.
+if is_windows then
+    local git_bash_bin = "C:\\Program Files\\Git\\bin"
+    local env = config.set_environment_variables or {}
+    -- os.getenv, not wezterm.getenv: the latter does not exist in the Lua API
+    -- (raises "attempt to call a nil value (field 'getenv')" and aborts the
+    -- whole config load, silently falling back to built-in defaults).
+    local cur_path = env.PATH or os.getenv("PATH") or ""
+    -- Only FIRST position wins for `where bash`: this machine has
+    -- C:\WINDOWS\system32 at index ~7 (WSL's bash.exe stub) and Git's bin at
+    -- index ~40, so merely "Git bin is somewhere in PATH" is not enough.
+    -- Prepending is the only available lever (the machine-level entries
+    -- cannot be reordered without admin rights), and the check stays a plain
+    -- first-entry comparison so re-running on an already-fixed PATH is a no-op.
+    local first_entry = cur_path:match("^[^;]*") or ""
+    if first_entry:lower() ~= git_bash_bin:lower() then
+        env.PATH = git_bash_bin .. ";" .. cur_path
+    end
+    config.set_environment_variables = env
+end
 
 return config
