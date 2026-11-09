@@ -1,0 +1,38 @@
+{
+  "servers": {
+    "vscode-json-language-server": {
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\a5134005\\AppData\\Local\\nvim-data\\mason\\packages\\json-lsp\\node_modules\\vscode-langservers-extracted\\bin\\vscode-json-language-server",
+        "--stdio"
+      ]
+    },
+    "yamlls": {
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\a5134005\\AppData\\Local\\nvim-data\\mason\\packages\\yaml-language-server\\node_modules\\yaml-language-server\\out\\server\\src\\server.js",
+        "--stdio"
+      ]
+    },
+    "bashls": {
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\a5134005\\AppData\\Local\\nvim-data\\mason\\packages\\bash-language-server\\node_modules\\bash-language-server\\out\\cli.js",
+        "start"
+      ]
+    },
+    "vimls": {
+      "command": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "C:\\Users\\a5134005\\AppData\\Local\\nvim-data\\mason\\packages\\vim-language-server\\node_modules\\vim-language-server\\bin\\index.js",
+        "--stdio"
+      ]
+    },
+    "clangd": {
+      "command": "C:\\Users\\a5134005\\AppData\\Local\\nvim-data\\mason\\packages\\clangd\\clangd_22.1.6\\bin\\clangd.exe"
+    },
+    "pylsp": {
+      "command": "C:\\Users\\a5134005\\AppData\\Local\\nvim-data\\mason\\packages\\python-lsp-server\\venv\\Scripts\\pylsp.exe"
+    }
+  }
+}

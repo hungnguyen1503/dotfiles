@@ -1,0 +1,176 @@
+shellPath: C:\Program Files\Git\bin\bash.exe
+providers:
+  openai-codex:
+    codeMode: auto
+  cacheRetention: long
+symbolPreset: nerd
+composer:
+  shape: claude
+  tokenRate: true
+theme:
+  dark: dark-tokyo-night
+setupVersion: 3
+disabledProviders:
+  - gitlab-duo
+  - gitlab-duo-agent
+  - llama.cpp
+  - lm-studio
+  - ollama
+modelRoles:
+  vision: google-antigravity/gemini-3.8-flash:auto
+  task: google-antigravity/gemini-3.8-flash:medium
+  smol: google-antigravity/gemini-3.8-flash:medium
+  default: google-antigravity/gemini-3.8-flash
+  memory: google-antigravity/gemini-3.8-flash:auto
+  slow: anthropic/claude-opus-5-5:medium
+  tiny: anthropic/claude-haiku-5-5:auto
+  commit: anthropic/claude-haiku-5-5:auto
+  plan: google-antigravity/claude-opus-4-6:medium
+  advisor: google-antigravity/claude-sonnet-5-5:medium
+  judge: river/zai-org/GLM-5.3-Flash:auto
+task:
+  agentModelOverrides:
+    reviewer: google-antigravity/claude-opus-4-6
+    scout: google-antigravity/gemini-3.8-flash
+    sonic: google-antigravity/gemini-3.1-flash-lite
+    task: google-antigravity/gemini-3.8-flash
+  agentPrewalk:
+    reviewer: "on"
+    scout: "on"
+    sonic: "on"
+    task: "off"
+  enableEffort: true
+  maxConcurrency: 8
+  enableLsp: true
+  maxEffort: high
+  disabledAgents:
+    - security-reviewer
+  agentAdvisor:
+    reviewer: "on"
+    task: "off"
+  prewalk: false
+  eager: preferred
+  structured: false
+cycleOrder:
+  - slow
+  - smol
+  - default
+  - task
+  - plan
+browser:
+  enabled: false
+  cmux: false
+  headless: false
+debug:
+  enabled: false
+astEdit:
+  enabled: true
+todo:
+  enabled: true
+  remindersMax: 5
+ask:
+  enabled: true
+launch:
+  enabled: false
+web_search:
+  enabled: true
+fetch:
+  enabled: true
+eval:
+  py: true
+  js: true
+  autoBackground:
+    enabled: false
+lsp:
+  enabled: true
+statusLine:
+  preset: default
+  separator: powerline-thin
+  transparent: false
+display:
+  cacheMissMarker: true
+  showTokenUsage: true
+  showTurnTime: true
+  hideToolActivity: false
+memory:
+  backend: local
+disabledExtensions:
+  - skill:devassist-ra-fsp
+  - skill:e2lite-rx-fsp-debug
+  - skill:fsp-rx
+  - skill:RA_CICD
+colorBlindMode: false
+extendedContext: false
+compaction:
+  handoffSaveToDisk: true
+  idleEnabled: true
+  idleThresholdTokens: 200000
+  thresholdPercent: 70
+  methodOrder:
+    - handoff
+    - remote
+    - shake
+    - soft
+    - snapcompact
+autolearn:
+  enabled: false
+  autoContinue: false
+github:
+  cache:
+    enabled: false
+includeWorkspaceTree: false
+retry:
+  maxRetries: 3
+  usageAwareFallback: false
+  fallbackChains:
+    slow:
+      - google-antigravity/claude-opus-4-6
+    vision:
+      - aibox/qwen3.8-flash
+    task:
+      - aibox/ds/deepseek-flash
+      - anthropic/claude-haiku-5-5
+    smol:
+      - aibox/ds/deepseek-flash
+      - anthropic/claude-haiku-5-5
+    default:
+      - aibox/ds/deepseek-flash
+      - anthropic/claude-haiku-5-5
+    commit:
+      - aibox/qwen3.8-flash
+    memory:
+      - aibox/ds/deepseek-flash
+    plan:
+      - anthropic/claude-opus-5-5
+    advisor:
+      - google-antigravity/gemini-3.5-flash-lite:high
+advisor:
+  enabled: false
+  syncBacklog: "off"
+terminal:
+  showProgress: false
+tui:
+  tight: false
+  vimMode: false
+  vimModeDisplay: icon
+hideThinkingBlock: false
+defaultThinkingLevel: auto
+dev:
+  autoqaConsent: granted
+provider:
+  appendOnlyContext: auto
+externalThinking: false
+magicKeywords:
+  orchestrate: true
+marketplace:
+  autoUpdate: auto
+edit:
+  streamingAbort: false
+extensions:
+  - C:\Users\a5134005\AppData\Roaming\npm\node_modules\billion-context\dist\agent\omp-native.js
+auth:
+  accountPolicies: []
+update:
+  auto: true
+astGrep:
+  enabled: false

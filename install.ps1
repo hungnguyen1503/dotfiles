@@ -15,6 +15,7 @@ $mappings = @(
     @{ repo = 'lazygit';    target = Join-Path $env:APPDATA 'lazygit' },
     @{ repo = 'fastfetch';  target = Join-Path $env:APPDATA 'fastfetch' },
     @{ repo = 'herdr';      target = Join-Path $env:APPDATA 'herdr' },
+    @{ repo = 'omp\agent';  target = Join-Path $HOME '.omp\agent' },
     @{ repo = 'wezterm';    target = Join-Path $HOME '.config\wezterm' },
     @{ repo = 'powershell'; target = Join-Path $HOME 'Documents\PowerShell' },
     @{ repo = 'nvim';       target = Join-Path $env:LOCALAPPDATA 'nvim' }
@@ -23,8 +24,11 @@ $mappings = @(
 function Test-IsJunctionTo([string]$path, [string]$to) {
     if (-not (Test-Path -LiteralPath $path)) { return $false }
     $item = Get-Item -LiteralPath $path -Force
-    return ($item.LinkType -eq 'Junction' -or $item.LinkType -eq 'SymbolicLink') -and
-           ($item.Target -and (([string]$item.Target[0]).TrimEnd('\') -ieq $to.TrimEnd('\')))
+    if ($item.LinkType -ne 'Junction' -and $item.LinkType -ne 'SymbolicLink') { return $false }
+    # Target is a string on some Windows builds and a string array on others.
+    $linkedTo = @($item.Target)[0]
+    if (-not $linkedTo) { return $false }
+    return ([string]$linkedTo).TrimEnd('\') -ieq $to.TrimEnd('\')
 }
 
 foreach ($m in $mappings) {
@@ -32,6 +36,11 @@ foreach ($m in $mappings) {
     $target = $m.target
     if (-not (Test-Path -LiteralPath $repoDir)) {
         Write-Error "Repo directory missing: $repoDir"
+    }
+
+    if ($m.repo -eq 'omp\agent' -and -not (Test-IsJunctionTo $target $repoDir) -and
+        (Get-Process -Name omp -ErrorAction SilentlyContinue)) {
+        Write-Error "omp is running; quit every omp session, then re-run this script so $target can be linked."
     }
 
     if (Test-IsJunctionTo $target $repoDir) {
@@ -56,8 +65,20 @@ foreach ($m in $mappings) {
         }
     }
 
+    New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
     New-Item -ItemType Junction -Path $target -Target $repoDir | Out-Null
     Write-Output ("{0,-12} created  {1} -> {2}" -f $m.repo, $target, $repoDir)
+}
+
+# omp: secrets live in the linked agent dir's .env (gitignored), never in the
+# repo. Seed it from the template so provider/MCP references resolve.
+$ompEnv = Join-Path $HOME '.omp\agent\.env'
+$ompExample = Join-Path $repoRoot 'omp\agent\.env.example'
+if ((Test-Path -LiteralPath (Join-Path $HOME '.omp\agent')) -and
+    -not (Test-Path -LiteralPath $ompEnv) -and
+    (Test-Path -LiteralPath $ompExample)) {
+    Copy-Item -LiteralPath $ompExample -Destination $ompEnv
+    Write-Output "omp          created .env from .env.example — fill in the keys"
 }
 
 # .gitconfig: write the include stub (original was moved into git/gitconfig on

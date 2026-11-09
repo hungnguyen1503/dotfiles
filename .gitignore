@@ -17,3 +17,14 @@ herdr/session-snapshots/
 powershell/Modules/
 powershell/Scripts/
 nvim/.lazy/
+# omp: ~/.omp/agent is junctioned into the repo, so only the portable config
+# files are tracked. Sessions, sqlite DBs, caches, memories and .env (secrets)
+# stay untracked.
+omp/agent/*
+!omp/agent/.env.example
+!omp/agent/config.yml
+!omp/agent/models.yml
+!omp/agent/mcp.json
+!omp/agent/lsp.json
+!omp/agent/extensions/
+!omp/agent/extensions/**

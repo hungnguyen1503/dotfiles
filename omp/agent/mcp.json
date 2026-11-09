@@ -1,0 +1,78 @@
+{
+  "$schema": "https://raw.githubusercontent.com/can1357/oh-my-pi/main/packages/coding-agent/src/config/mcp-schema.json",
+  "mcpServers": {
+    "atlassian": {
+      "type": "stdio",
+      "command": "C:\\Users\\a5134005\\.local\\bin\\mcp-atlassian.exe",
+      "timeout": 120000,
+      "env": {
+        "JIRA_URL": "https://jira.eng.renesas.com",
+        "JIRA_PERSONAL_TOKEN": "JIRA_PERSONAL_TOKEN",
+        "TOOLSETS": "all"
+      },
+      "enabled": true
+    },
+    "codegraph": {
+      "type": "stdio",
+      "command": "C:\\Users\\a5134005\\AppData\\Local\\codegraph\\current\\node.exe",
+      "args": [
+        "C:\\Users\\a5134005\\AppData\\Local\\codegraph\\current\\lib\\dist\\bin\\codegraph.js",
+        "serve",
+        "--mcp"
+      ],
+      "timeout": 120000,
+      "env": {
+        "CODEGRAPH_MCP_TOOLS": "explore"
+      }
+    },
+    "node_repl": {
+      "type": "stdio",
+      "command": "C:\\Users\\a5134005\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\23828fd353da361d\\bin\\node_repl.exe",
+      "args": [],
+      "timeout": 120000,
+      "env": {
+        "NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS": "1000",
+        "NODE_REPL_NODE_MODULE_DIRS": "C:\\Users\\a5134005\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\23828fd353da361d\\bin\\node_modules",
+        "NODE_REPL_NODE_PATH": "C:\\Users\\a5134005\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\23828fd353da361d\\bin\\node.exe",
+        "NODE_REPL_TRUSTED_CODE_PATHS": "C:\\Users\\a5134005\\.codex;C:\\Users\\a5134005\\AppData\\Local\\OpenAI\\Codex\\runtimes\\cua_node\\23828fd353da361d\\bin\\node_modules",
+        "CODEX_HOME": "C:\\Users\\a5134005\\.codex",
+        "NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S": "8676faca28eddb6424d4b54116fe8305e2da6a0ca4e5271e8758fc3c55c3b8fc",
+        "BROWSER_USE_AVAILABLE_BACKENDS": "chrome,iab",
+        "NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER": "Control the in-app browser in conjunction with the Browser Plugin.",
+        "NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME": "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative.",
+        "BROWSER_USE_CODEX_APP_BUILD_FLAVOR": "prod",
+        "BROWSER_USE_CODEX_APP_VERSION": "26.803.81509",
+        "SKY_CUA_NATIVE_PIPE": "1",
+        "SKY_CUA_NATIVE_PIPE_DIRECTORY": "\\\\.\\pipe\\codex-computer-use-cea5eb4c-9151-4698-a43b-776a2423d5c3",
+        "CODEX_CLI_PATH": "C:\\Users\\a5134005\\AppData\\Local\\OpenAI\\Codex\\bin\\8e8bf206e63ac436\\codex.exe"
+      },
+      "enabled": false
+    },
+    "hum": {
+      "type": "http",
+      "url": "http://hummcp.hcm.rvc.renesas.com:19021/mcp",
+      "headers": {
+        "Authorization": "Bearer ${HUM_TOKEN}"
+      },
+      "timeout": 120000,
+      "enabled": false
+    },
+    "sche": {
+      "type": "http",
+      "url": "https://schematicmcp.hungnguyenjx.space/mcp",
+      "headers": {
+        "Authorization": "Bearer ${SCHE_TOKEN}"
+      },
+      "enabled": false
+    },
+    "tfm": {
+      "type": "http",
+      "url": "http://tfmmcp.coder.zephyrdev001.rvc.renesas.com:19021/mcp",
+      "headers": {
+        "Authorization": "Bearer ${TFM_TOKEN}"
+      },
+      "enabled": false,
+      "timeout": 300000
+    }
+  }
+}

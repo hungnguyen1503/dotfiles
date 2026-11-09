@@ -1,0 +1,117 @@
+# Custom providers for omp (oh-my-pi)
+# Docs: https://omp.sh/docs/custom-models  (schema: ~/.omp/agent/models.yml)
+
+providers:
+  aibox:
+    baseUrl: https://api.ai-box.vn
+    api: anthropic-messages          # routes to <baseUrl>/v1/messages
+    apiKey: AIBOX_API_KEY
+    disableStrictTools: true         # gateways often reject Anthropic strict tool schemas
+    auth: apiKey
+    models:
+      - id: qwen3.8-flash
+        name: Qwen3.8 Flash
+        reasoning: true
+        input: [text]
+        contextWindow: 300000
+        maxTokens: 32000
+        cost:
+          input: 0.031926
+          output: 0.093784
+          cacheRead: 0.003193
+          cacheWrite: 0.039908
+      - id: qwen3.8-max-0902
+        name: Qwen3.8 Max 0902
+        reasoning: true
+        input: [text]
+        contextWindow: 276000
+        maxTokens: 32000
+        cost:
+          input: 0.399079
+          output: 1.197238
+          cacheRead: 0.024942
+          cacheWrite: 0.399079
+      - id: ds/deepseek-flash
+        name: Deepseek V4.1 Flash (apibox)
+        reasoning: true
+        input: [text]
+        contextWindow: 300000
+        maxTokens: 32000
+        cost:
+          input: 0.057346
+          output: 0.229385
+          cacheRead: 0.001147
+          cacheWrite: 0
+
+  river:
+    baseUrl: https://api.river.ai/v1
+    api: openai-completions          # routes to <baseUrl>/chat/completions = /v1/chat/completions
+    apiKey: RIVER_API_KEY
+    models:
+      - id: deepseek-ai/DeepSeek-V4.1-Flash-1017
+        name: DeepSeek V4.1 Flash 1017 (river)
+        reasoning: true
+        input: [text]
+        contextWindow: 300000
+        maxTokens: 32000
+        cost:
+          input: 0.120
+          output: 0.480
+          cacheRead: 0.0024
+          cacheWrite: 0
+      - id: zai-org/GLM-5.3-Flash
+        name: GLM 5.3 Flash
+        reasoning: true
+        input: [text]
+        contextWindow: 300000
+        maxTokens: 32000
+        cost:
+          input: 0.120
+          output: 0.400
+          cacheRead: 0.024
+          cacheWrite: 0
+  # Override google-antigravity models to cap context window at 300,000 (aligning with api-box maximum)
+  google-antigravity:
+    modelOverrides:
+      gemini-3.8-flash:
+        contextWindow: 300000
+      gemini-3.7-flash:
+        contextWindow: 300000
+      gemini-3.6-flash:
+        contextWindow: 300000
+      gemini-3.5-flash:
+        contextWindow: 300000
+      gemini-3.5-flash-lite:
+        contextWindow: 300000
+      gemini-3.1-pro:
+        contextWindow: 300000
+      gemini-3.1-flash-lite:
+        contextWindow: 300000
+      gemini-3-flash:
+        contextWindow: 300000
+      gemini-3-pro:
+        contextWindow: 300000
+      gemini-2.5-flash:
+        contextWindow: 300000
+      gemini-2.5-flash-lite:
+        contextWindow: 300000
+      gemini-2.5-pro:
+        contextWindow: 300000
+      claude-sonnet-4-5:
+        contextWindow: 300000
+      claude-opus-5-5:
+        contextWindow: 276000
+      claude-sonnet-5-5:
+        contextWindow: 276000
+      gemini-4-argon:
+        contextWindow: 276000
+
+  # Cap the anthropic Claude 5.5 models at 276,000 tokens
+  anthropic:
+    modelOverrides:
+      claude-opus-5-5:
+        contextWindow: 276000
+      claude-sonnet-5-5:
+        contextWindow: 276000
+      claude-haiku-5-5:
+        contextWindow: 300000

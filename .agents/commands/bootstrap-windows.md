@@ -20,7 +20,9 @@ pwsh ./install.ps1
   - `%APPDATA%\lazygit` -> `lazygit/`
   - `%APPDATA%\fastfetch` -> `fastfetch/`
   - `%APPDATA%\herdr` -> `herdr/`
+  - `%USERPROFILE%\.omp\agent` -> `omp/agent/`
   - `%USERPROFILE%\.config\wezterm` -> `wezterm/`
   - `%USERPROFILE%\Documents\PowerShell` -> `powershell/`
   - `%LOCALAPPDATA%\nvim` -> `nvim/`
 - **Git Config**: Writes stub to `%USERPROFILE%\.gitconfig` pointing to `~/dotfiles/git/gitconfig`.
+- **omp**: Quit every running omp session first — Windows cannot relocate the agent dir's open sqlite files, so the first link fails while omp runs. Existing agent state (sessions, DBs, `.env`) is moved into `omp/agent/` and stays untracked. If `omp/agent/.env` is missing, the script seeds it from `.env.example`; fill in the provider keys and MCP tokens there, never in the tracked files.
